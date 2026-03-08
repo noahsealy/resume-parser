@@ -5,7 +5,7 @@ class PdfParser(FileParser):
     def __init__(self):
         super().__init__('pdf')
 
-    def parse(self, file_path):
+    def parse(self, file_path: str) -> str:
         reader = PdfReader(file_path)
         text = ''
         for page in reader.pages:
