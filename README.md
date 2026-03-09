@@ -21,7 +21,9 @@ src/
   inference/      # LLM client abstraction (Gemini + TestClient)
   framework/      # Orchestration (ResumeExtractor, ResumeParserFramework)
   models/         # ResumeData dataclass
+tests/            # Unit test suite
 main.py           # Entry point
+pytest.ini        # Pytest configuration
 ```
 
 ## Setup
@@ -103,3 +105,43 @@ APP_ENV=production
 
 python main.py
 ```
+
+## Running Tests
+
+The test suite uses `pytest` and `unittest.mock` — no API key or network access required.
+
+```bash
+pytest
+```
+
+To run with verbose output:
+
+```bash
+pytest -v
+```
+
+To run an individual test file:
+
+```bash
+pytest tests/test_foo.py
+```
+
+To run a single test by name:
+
+```bash
+pytest tests/test_foo.py::test_function_name
+```
+
+### Test Coverage
+
+| File | What's tested |
+| ---- | ------------- |
+| `tests/test_email_extractor.py` | Regex matching, multiple emails, type validation |
+| `tests/test_name_extractor.py` | Happy path, whitespace trimming, retry logic, sleep behavior |
+| `tests/test_skills_extractor.py` | JSON parsing, code fence stripping, retry logic, invalid response errors |
+| `tests/test_prompts.py` | Prompt string output, required keywords for TestClient matching |
+| `tests/test_parsers.py` | PDF/Word parsing via mocked readers, empty file handling |
+| `tests/test_resume_extractor.py` | Full extraction pipeline with TestClient, missing extractor defaults |
+| `tests/test_framework.py` | File routing, unsupported extension error, end-to-end pipeline |
+
+All LLM calls are handled by `TestClient` or `unittest.mock` — the suite runs fully offline.
