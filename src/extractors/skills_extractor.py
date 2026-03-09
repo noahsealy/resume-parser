@@ -1,3 +1,4 @@
+import json
 import os
 from dotenv import load_dotenv
 from src.extractors.field_extractor import FieldExtractor
@@ -29,7 +30,8 @@ class SkillsExtractor(FieldExtractor):
                 if not response.text:
                     raise ValueError("Empty response from model")
 
-                result = eval(response.text)
+                cleaned = response.text.strip().strip("```json").strip("```").strip()
+                result = json.loads(cleaned)
 
                 if not isinstance(result, list):
                     raise ValueError("Model output is not a list")

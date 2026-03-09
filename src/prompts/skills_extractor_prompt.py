@@ -4,10 +4,10 @@ class SkillsExtractorPrompt:
 
     def get_prompt(self, text: str) -> str:
         prompt = [
-            'You are assessing the skills of professional candidates from their resumes'
-            'Given a resume, please extract all relevant skills: ',
+            'You are extracting skills from professional resumes.',
+            'Given the resume below, extract all relevant technical and soft skills.',
             text,
-            'Provide an output that is exactly one array of strings, of the skills you find.'
+            'Respond with a valid JSON array of strings only. No explanation, no markdown, no code fences. Example: ["Python", "SQL", "Communication"]'
         ]
 
         return '\n'.join(prompt)

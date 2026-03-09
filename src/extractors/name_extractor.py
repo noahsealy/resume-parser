@@ -29,9 +29,9 @@ class NameExtractor(FieldExtractor):
                 if not response.text:
                     raise ValueError("Empty response from model")
 
-                result = eval(response.text)
-                
-                if not isinstance(result, str):
+                result = response.text.strip()
+
+                if not result:
                     raise ValueError("Model output is not a string")
 
                 return result

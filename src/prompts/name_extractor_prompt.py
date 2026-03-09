@@ -4,10 +4,10 @@ class NameExtractorPrompt:
 
     def get_prompt(self, text: str) -> str:
         prompt = [
-            'You are assessing the skills of professional candidates from their resumes',
-            'Given a resume, please extract the candidates name',
+            'You are extracting information from professional resumes.',
+            'Given the resume below, extract the full name of the candidate.',
             text,
-            'Provide an output that is exactly one string of the candidates name.'
+            'Respond with the candidate\'s full name only. No explanation, no punctuation, no extra text.'
         ]
 
         return '\n'.join(prompt)
