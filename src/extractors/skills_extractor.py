@@ -5,12 +5,13 @@ from src.inference.llm_client import LLMClient
 import time
 
 class SkillsExtractor(FieldExtractor):
-    def __init__(self):
+    def __init__(self, llm: LLMClient):
         super().__init__('skills')
+        self.llm = llm
         self.max_retries = 3
         self.base_delay = 2
 
-    def extract(self, text: str, llm: LLMClient) -> list[str]:
+    def extract(self, text: str) -> list[str]:
         if not isinstance(text, str):
             raise TypeError("Text must be a string")
         
@@ -18,7 +19,7 @@ class SkillsExtractor(FieldExtractor):
 
         for attempt in range(self.max_retries):
             try:
-                response = llm.generate(prompt=prompt)
+                response = self.llm.generate(prompt=prompt)
 
                 if not response.text:
                     raise ValueError("Empty response from model")

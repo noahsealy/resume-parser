@@ -6,22 +6,32 @@ from src.extractors.skills_extractor import SkillsExtractor
 from src.extractors.name_extractor import NameExtractor
 from src.inference.gemini_client import GeminiClient
 
+from src.framework.resume_parser_framework import ResumeParserFramework
+from src.framework.resume_extractor import ResumeExtractor
+
+from src.models.resume_data import ResumeData
+
 def main():
-    pdf = PdfParser()
-    word = WordParser()
+    llm = GeminiClient()
 
-    resume = pdf.parse('NoahSealyResume.pdf')
+    extractors = {
+        'name': NameExtractor(llm=llm),
+        'email': EmailExtractor(),
+        'skills': SkillsExtractor(llm=llm)
+    }
 
-    # email = EmailExtractor()
-    # print(email.extract(resume))
+    file_parsers = {
+        'pdf': PdfParser(),
+        'docx': WordParser(),
+    }
 
-    client = GeminiClient()
+    resume_extractor = ResumeExtractor(extractors=extractors)
 
-    skills = SkillsExtractor()
-    print(skills.extract(resume, client))
+    framework = ResumeParserFramework(file_parsers=file_parsers, resume_extractor=resume_extractor)
 
-    # name = NameExtractor()
-    # print(name.extract(resume))
+    result = framework.parse_resume('resume.pdf')
+
+    print(result)
 
 if __name__ == '__main__':
     sys.exit(main())
