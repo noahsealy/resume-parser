@@ -13,6 +13,9 @@ class SkillsExtractor(FieldExtractor):
         load_dotenv()
 
     def extract(self, text: str) -> list[str]:
+        if not isinstance(text, str):
+            raise TypeError("Text must be a string")
+        
         client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         prompt = SkillsExtractorPrompt().get_prompt(text)
 
@@ -26,15 +29,15 @@ class SkillsExtractor(FieldExtractor):
                 if not response.text:
                     raise ValueError("Empty response from model")
 
-                parsed = eval(response.text)
+                result = eval(response.text)
 
-                if not isinstance(parsed, list):
+                if not isinstance(result, list):
                     raise ValueError("Model output is not a list")
 
-                if not all(isinstance(x, str) for x in parsed):
+                if not all(isinstance(skill, str) for skill in result):
                     raise ValueError("List contains non-string values")
 
-                return parsed
+                return result
 
             except Exception as e:
                 if attempt == self.max_retries - 1:

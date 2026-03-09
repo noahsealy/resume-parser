@@ -9,5 +9,8 @@ class EmailExtractor(FieldExtractor):
         return self.find_emails(text)[0]
     
     def find_emails(self, text: str) -> list[str]:
+        if not isinstance(text, str):
+            raise TypeError("Text must be a string")
+
         pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
         return re.findall(pattern, text)
