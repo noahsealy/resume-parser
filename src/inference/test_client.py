@@ -1,18 +1,20 @@
 from src.inference.llm_client import LLMClient
 from google import genai
 
-class TestClient(LLMClient):
-    def __init__(self, responses: dict[str, str]):
-        self.responses = responses
+class TestResponse:
+    def __init__(self, text: str):
+        self.text = text
 
-    """ use: 
-        fake_llm = FakeLLMClient({
-        "SKILLS_EXTRACT": "['Python', 'SQL', 'Machine Learning']",
-        "NAME_EXTRACT": "'John Doe'"
-        })
-    """
-    def generate(self, prompt: str) -> str:
-        for key, value in self.responses.items():
-            if key in prompt:
-                return value
+class TestClient(LLMClient):
+    def __init__(self):
+        pass
+
+    def generate(self, prompt: str) -> TestResponse:
+
+        if 'extract all relevant technical and soft skills.' in prompt:
+            return TestResponse('["python"]')
+
+        if 'extract the full name of the candidate' in prompt:
+            return TestResponse('Noah Sealy')
+
         raise ValueError('No fake response configured for prompt')

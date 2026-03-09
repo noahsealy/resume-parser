@@ -19,10 +19,11 @@ class NameExtractor(FieldExtractor):
         for attempt in range(self.max_retries):
             try:
                 response = self.llm.generate(prompt=prompt)
-
+                print('RESPONSE')
+                print(response)
                 if not response.text:
                     raise ValueError("Empty response from model")
-
+                
                 result = response.text.strip()
 
                 if not result:
