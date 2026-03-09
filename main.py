@@ -13,9 +13,15 @@ from src.framework.resume_extractor import ResumeExtractor
 
 from src.models.resume_data import ResumeData
 
+import os
+from dotenv import load_dotenv
+
 def main():
-    # llm = GeminiClient()
-    llm = TestClient()
+    load_dotenv()
+    if os.getenv('APP_ENV') == 'production':
+        llm = GeminiClient()
+    else:
+        llm = TestClient()
 
     extractors = {
         'name': NameExtractor(llm=llm),
