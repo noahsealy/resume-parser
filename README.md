@@ -1,5 +1,7 @@
 # Resume Parser
 
+Recording Highlighting Project: https://www.loom.com/share/5a043625fca24603a014cadd9d9a5d92
+
 A Python framework for extracting structured data from resumes. Given a PDF or Word document, it extracts the candidate's name, email address, and skills using a combination of regex-based parsing and LLM inference (Google Gemini).
 
 ## What It Does
