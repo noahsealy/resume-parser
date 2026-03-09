@@ -4,6 +4,7 @@ from src.parsers.word_parser import WordParser
 from src.extractors.email_extractor import EmailExtractor
 from src.extractors.skills_extractor import SkillsExtractor
 from src.extractors.name_extractor import NameExtractor
+from src.inference.gemini_client import GeminiClient
 
 def main():
     pdf = PdfParser()
@@ -14,11 +15,13 @@ def main():
     # email = EmailExtractor()
     # print(email.extract(resume))
 
-    # skills = SkillsExtractor()
-    # print(skills.extract(resume))
+    client = GeminiClient()
 
-    name = NameExtractor()
-    print(name.extract(resume))
+    skills = SkillsExtractor()
+    print(skills.extract(resume, client))
+
+    # name = NameExtractor()
+    # print(name.extract(resume))
 
 if __name__ == '__main__':
     sys.exit(main())

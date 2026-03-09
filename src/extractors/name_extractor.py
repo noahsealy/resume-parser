@@ -1,8 +1,6 @@
-import os
-from dotenv import load_dotenv
 from src.extractors.field_extractor import FieldExtractor
 from src.prompts.name_extractor_prompt import NameExtractorPrompt
-from google import genai
+from src.inference.llm_client import LLMClient
 import time
 
 class NameExtractor(FieldExtractor):
@@ -10,21 +8,16 @@ class NameExtractor(FieldExtractor):
         super().__init__('name')
         self.max_retries = 3
         self.base_delay = 2
-        load_dotenv()
 
-    def extract(self, text: str) -> str:
+    def extract(self, text: str, llm: LLMClient) -> str:
         if not isinstance(text, str):
             raise TypeError("Text must be a string")
         
-        client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         prompt = NameExtractorPrompt().get_prompt(text)
 
         for attempt in range(self.max_retries):
             try:
-                response = client.models.generate_content(
-                    model="gemini-3-flash-preview",
-                    contents=prompt,
-                )
+                response = llm.generate(prompt=prompt)
 
                 if not response.text:
                     raise ValueError("Empty response from model")
