@@ -26,7 +26,7 @@ def main():
     extractors = {
         'name': NameExtractor(llm=llm),
         'email': EmailExtractor(),
-        'skills': SkillsExtractor(llm=llm)
+        'skills': SkillsExtractor(llm=llm),
     }
 
     file_parsers = {
@@ -38,9 +38,15 @@ def main():
 
     framework = ResumeParserFramework(file_parsers=file_parsers, resume_extractor=resume_extractor)
 
-    result = framework.parse_resume('NoahSealyResume.pdf')
+    # Example 1: Parse a PDF resume
+    pdf_result = framework.parse_resume('NoahSealyResume.pdf')
+    print("PDF result:")
+    print(pdf_result.to_json())
 
-    print(result)
+    # Example 2: Parse a Word resume
+    docx_result = framework.parse_resume('NoahSealyResume.docx')
+    print("Word result:")
+    print(docx_result.to_json())
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -7,9 +7,7 @@ from src.extractors.skills_extractor import SkillsExtractor
 from src.inference.test_client import TestClient
 from src.models.resume_data import ResumeData
 
-
 RESUME_TEXT = "Jane Doe\njane@example.com\nSkills: Python, SQL"
-
 
 @pytest.fixture
 def full_extractor():
@@ -19,7 +17,6 @@ def full_extractor():
         "email": EmailExtractor(),
         "skills": SkillsExtractor(llm=client),
     })
-
 
 class TestResumeExtractor:
     def test_returns_resume_data_instance(self, full_extractor):

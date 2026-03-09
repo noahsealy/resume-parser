@@ -3,19 +3,15 @@ from unittest.mock import MagicMock, patch
 from src.extractors.skills_extractor import SkillsExtractor
 from src.inference.test_client import TestClient, TestResponse
 
-
 RESUME_TEXT = "Jane Doe\njane@example.com\nSkills: Python, SQL, Docker"
-
 
 @pytest.fixture
 def test_client():
     return TestClient()
 
-
 @pytest.fixture
 def extractor(test_client):
     return SkillsExtractor(llm=test_client)
-
 
 class TestSkillsExtractorHappyPath:
     def test_returns_list(self, extractor):
@@ -50,7 +46,6 @@ class TestSkillsExtractorHappyPath:
         result = extractor.extract(RESUME_TEXT)
         assert result == ["Python", "SQL", "Docker", "Communication"]
 
-
 class TestSkillsExtractorValidation:
     def test_non_string_input_raises_type_error(self, extractor):
         with pytest.raises(TypeError):
@@ -83,7 +78,6 @@ class TestSkillsExtractorValidation:
         extractor = SkillsExtractor(llm=mock_llm)
         with pytest.raises(RuntimeError, match="Skill extraction failed"):
             extractor.extract(RESUME_TEXT)
-
 
 class TestSkillsExtractorRetryLogic:
     @patch("time.sleep")

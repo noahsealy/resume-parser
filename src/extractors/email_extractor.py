@@ -6,7 +6,24 @@ class EmailExtractor(FieldExtractor):
         super().__init__('email')
 
     def extract(self, text: str) -> str:
-        return self.find_emails(text)[0]
+        try:
+            response = self.find_emails(text)
+
+            if not isinstance(response, list):
+                raise ValueError("Model output is not a list")
+
+            if not all(isinstance(email, str) for email in response):
+                raise ValueError("List contains non-string values")
+
+            result = response[0]
+
+            if not isinstance(result, str):
+                raise ValueError("Model output is not a string")
+
+            return result
+
+        except Exception as e:
+            raise RuntimeError(f"Email extraction failed: {e}")
     
     def find_emails(self, text: str) -> list[str]:
         if not isinstance(text, str):

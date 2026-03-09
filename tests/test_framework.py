@@ -8,9 +8,7 @@ from src.extractors.skills_extractor import SkillsExtractor
 from src.inference.test_client import TestClient
 from src.models.resume_data import ResumeData
 
-
 RESUME_TEXT = "Jane Doe\njane@example.com\nSkills: Python"
-
 
 @pytest.fixture
 def resume_extractor():
@@ -20,7 +18,6 @@ def resume_extractor():
         "email": EmailExtractor(),
         "skills": SkillsExtractor(llm=client),
     })
-
 
 @pytest.fixture
 def framework(resume_extractor):
@@ -32,7 +29,6 @@ def framework(resume_extractor):
         file_parsers={"pdf": mock_pdf, "docx": mock_docx},
         resume_extractor=resume_extractor,
     )
-
 
 class TestResumeParserFramework:
     def test_unsupported_extension_raises_value_error(self, framework):

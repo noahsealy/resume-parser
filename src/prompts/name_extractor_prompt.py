@@ -3,6 +3,9 @@ class NameExtractorPrompt:
         pass
 
     def get_prompt(self, text: str) -> str:
+        if not isinstance(text, str):
+            raise TypeError(f"text must be a string, got {type(text).__name__}")
+        
         prompt = [
             'You are extracting information from professional resumes.',
             'Given the resume below, extract the full name of the candidate.',

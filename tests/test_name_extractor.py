@@ -3,19 +3,15 @@ from unittest.mock import MagicMock, patch
 from src.extractors.name_extractor import NameExtractor
 from src.inference.test_client import TestClient, TestResponse
 
-
 RESUME_TEXT = "Jane Doe\njane@example.com\nSkills: Python, SQL"
-
 
 @pytest.fixture
 def test_client():
     return TestClient()
 
-
 @pytest.fixture
 def extractor(test_client):
     return NameExtractor(llm=test_client)
-
 
 class TestNameExtractorHappyPath:
     def test_returns_name_string(self, extractor):
@@ -37,7 +33,6 @@ class TestNameExtractorHappyPath:
         result = extractor.extract(RESUME_TEXT)
         assert result == "Jane Doe"
 
-
 class TestNameExtractorValidation:
     def test_non_string_input_raises_type_error(self, extractor):
         with pytest.raises(TypeError):
@@ -46,7 +41,6 @@ class TestNameExtractorValidation:
     def test_integer_input_raises_type_error(self, extractor):
         with pytest.raises(TypeError):
             extractor.extract(123)
-
 
 class TestNameExtractorRetryLogic:
     @patch("time.sleep")

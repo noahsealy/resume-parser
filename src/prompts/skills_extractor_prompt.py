@@ -3,6 +3,9 @@ class SkillsExtractorPrompt:
         pass
 
     def get_prompt(self, text: str) -> str:
+        if not isinstance(text, str):
+            raise TypeError(f"text must be a string, got {type(text).__name__}")
+        
         prompt = [
             'You are extracting skills from professional resumes.',
             'Given the resume below, extract all relevant technical and soft skills.',

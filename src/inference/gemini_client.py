@@ -9,10 +9,10 @@ class GeminiClient(LLMClient):
         api = os.getenv('GEMINI_API_KEY')
         self.client = genai.Client(api_key=api)
 
-    def generate(self, prompt: str) -> str:
+    def generate(self, prompt: str):
         response = self.client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=prompt,
         )
 
-        return response.text
+        return response

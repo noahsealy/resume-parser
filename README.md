@@ -55,16 +55,30 @@ pytest.ini        # Pytest configuration
 
 ## Usage
 
-Update the file path in `main.py` to point to your resume, then run:
+Update the file paths in `main.py` to point to your resumes, then run:
 
 ```bash
 python main.py
 ```
 
-The output is a `ResumeData` object:
+`main.py` demonstrates both supported formats:
 
 ```python
-ResumeData(name='Jane Doe', email='jane@example.com', skills=['Python', 'SQL', 'Docker'])
+# Example 1: Parse a PDF resume
+pdf_result = framework.parse_resume('NoahSealyResume.pdf')
+
+# Example 2: Parse a Word resume
+docx_result = framework.parse_resume('NoahSealyResume.docx')
+```
+
+Each call returns a `ResumeData` object serialized as JSON:
+
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "skills": ["Python", "SQL", "Docker"]
+}
 ```
 
 ## Test Client
@@ -134,14 +148,15 @@ pytest tests/test_foo.py::test_function_name
 
 ### Test Coverage
 
-| File | What's tested |
-| ---- | ------------- |
-| `tests/test_email_extractor.py` | Regex matching, multiple emails, type validation |
-| `tests/test_name_extractor.py` | Happy path, whitespace trimming, retry logic, sleep behavior |
+| File                             | What's tested                                                            |
+| -------------------------------- | ------------------------------------------------------------------------ |
+| `tests/test_email_extractor.py`  | Regex matching, multiple emails, type validation                         |
+| `tests/test_name_extractor.py`   | Happy path, whitespace trimming, retry logic, sleep behavior             |
 | `tests/test_skills_extractor.py` | JSON parsing, code fence stripping, retry logic, invalid response errors |
-| `tests/test_prompts.py` | Prompt string output, required keywords for TestClient matching |
-| `tests/test_parsers.py` | PDF/Word parsing via mocked readers, empty file handling |
-| `tests/test_resume_extractor.py` | Full extraction pipeline with TestClient, missing extractor defaults |
-| `tests/test_framework.py` | File routing, unsupported extension error, end-to-end pipeline |
+| `tests/test_prompts.py`          | Prompt string output, required keywords for TestClient matching          |
+| `tests/test_parsers.py`          | PDF/Word parsing via mocked readers, empty file handling                 |
+| `tests/test_resume_extractor.py` | Full extraction pipeline with TestClient, missing extractor defaults     |
+| `tests/test_framework.py`        | File routing, unsupported extension error, end-to-end pipeline           |
+| `tests/test_resume_data.py`      | JSON serialization, field correctness, edge cases (None, empty skills)   |
 
 All LLM calls are handled by `TestClient` or `unittest.mock` — the suite runs fully offline.
