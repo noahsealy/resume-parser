@@ -2,9 +2,9 @@ import sys
 from src.parsers.pdf_parser import PdfParser
 from src.parsers.word_parser import WordParser
 from src.extractors.email_extractor import EmailExtractor
+from src.extractors.skills_extractor import SkillsExtractor
 
 def main():
-    print('hhello')
     pdf = PdfParser()
     word = WordParser()
 
@@ -12,6 +12,9 @@ def main():
 
     email = EmailExtractor()
     print(email.extract(resume))
+
+    skills = SkillsExtractor()
+    print(skills.extract(resume))
 
 if __name__ == '__main__':
     sys.exit(main())
